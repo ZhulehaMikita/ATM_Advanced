@@ -15,14 +15,14 @@ When('The page is loaded as {string} user', async function (user){
 });
 
 When('the {string} page is switched to', function(value){
-    $(pageSwitcher.setState(value));
+    pageSwitcher.setState(value);
     pageSwitcher.getState().openPage();
     logger.info(`"${value}" page is switched to`);
 });
 
 Then('{string} page should be opened', async function (value){
     await browser.pause(1000);
-    $(pageSwitcher.setState(value));
+    pageSwitcher.setState(value);
     expect(await browser.getUrl()).to.be.equal(pageSwitcher.getUrl());
     logger.info(`"${value}" page is opened`);
 });
@@ -42,7 +42,7 @@ Then('{string} should be disabled', async function(value){
 Then('Elements of {string} are equal to:', async function(value, title){
     let text = await $$(pageSwitcher.getElement(value)).map(el => el.getText()).join(',');
     let arr = [].concat.apply([], title.rawTable).join(',');
-    expect(text === arr).to.be.equal(true);
+    expect(text).to.equal(arr);
     logger.info(`Elements of "${value}" are equal to "${arr}"`);
 });
 
