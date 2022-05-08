@@ -55,7 +55,6 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        maxInstances: 5,
         browserName: 'chrome',
         acceptInsecureCerts: true,
         maxInstances: args.instances 
@@ -194,7 +193,7 @@ exports.config = {
     },
     afterStep: async function () {
         const screenshot = await browser.takeScreenshot()
-        const decodedImage = new Buffer.from(screenshot, 'base64');
+        const decodedImage = Buffer.from(screenshot, 'base64');
         return this.attach(decodedImage, 'image/png');
     },
     onComplete: () => {
