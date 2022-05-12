@@ -4,8 +4,8 @@ node {
     checkout scm
   }
   stage('SonarQube analysis') {
-    def scannerHome = tool 'sonar-scanner-4.7.0.2747-windows';
-    withSonarQubeEnv('My SonarQube Server') { 
+    def scannerHome = tool 'SonarQube_Scanner';
+    withSonarQubeEnv('SonarQube_Scanner') { 
       bat "${scannerHome}/bin/sonar-scanner"
     }
   }
