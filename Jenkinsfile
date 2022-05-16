@@ -9,6 +9,7 @@ node {
   stage('Test') {
     dir("TAF_IO") {
       bat 'npm test'
+    }
   }
   stage('SonarQube analysis') {
     def scannerHome = tool 'SonarScanner';
