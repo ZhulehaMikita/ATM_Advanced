@@ -19,4 +19,8 @@ node {
       bat "${scannerHome}/bin/sonar-scanner" 
     }
   }
-}
+} post {
+      always {
+        junit '**/reports/junit/*.xml'
+      }
+   } 
