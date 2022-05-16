@@ -9,16 +9,13 @@ node {
     }
   }
   stage('Test') {
-    dir("TAF_IO") {
-      bat 'npm test'
-    }
-  } post {
-      always {
-         dir("TAF_IO"){
-          junit './reports/junit/*.xml'
-         }
+    steps {
+      dir("TAF_IO") {
+        bat 'npm test'
+        junit '**/reports/junit/*.xml'
       }
-   } 
+    }
+  }
   stage('SonarQube analysis') {
     def scannerHome = tool 'SonarScanner';
     withSonarQubeEnv('Sonar local') { 
