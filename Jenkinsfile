@@ -8,6 +8,18 @@ node {
       bat 'npm install'
     }
   }
+    stage('SonarQube analysis') {
+    def scannerHome = tool 'SonarScanner';
+    withSonarQubeEnv('Sonar local') { 
+      bat "${scannerHome}/bin/sonar-scanner" 
+    }
+  }
+  stage("Quality Gate"){
+    def qg = waitForQualityGate();
+    if (qg.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
   stage('Test') {
       dir("TAF_IO") {
         try { 
@@ -16,19 +28,5 @@ node {
           junit '**/reports/junit/*.xml'
         }
      }
-  }
-  stage('SonarQube analysis') {
-    def scannerHome = tool 'SonarScanner';
-    withSonarQubeEnv('Sonar local') { 
-      bat "${scannerHome}/bin/sonar-scanner" 
-    }
-  }
-  stage("Quality Gate"){
-  timeout(time: 1, unit: 'HOURS') {
-    def qg = waitForQualityGate();
-    if (qg.status != 'OK') {
-      error "Pipeline aborted due to quality gate failure: ${qg.status}"
-      }
-    }
   }
 } 
