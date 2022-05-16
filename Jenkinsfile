@@ -4,7 +4,9 @@ node {
     checkout scm
   }
   stage('Install') {
-    bat 'npm install'
+        dir("TAF_IO") {
+      bat 'npm install'
+    }
   }
   stage('Test') {
     dir("TAF_IO") {
