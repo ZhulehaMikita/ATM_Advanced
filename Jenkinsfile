@@ -10,9 +10,12 @@ node {
   }
   stage('Test') {
       dir("TAF_IO") {
-        bat 'npm test'
-        junit '**/reports/junit/*.xml'
-      }
+        try { 
+          bat 'npm test' 
+        } finally {
+          junit '**/reports/junit/*.xml'
+        }
+     }
   }
   stage('SonarQube analysis') {
     def scannerHome = tool 'SonarScanner';
