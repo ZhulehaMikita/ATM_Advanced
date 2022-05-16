@@ -5,7 +5,7 @@ class BasePage {
     
     constructor(){
         this.url = params[args.env];
-    };
+    }
 
     openPage(){
         return browser.url(this.url);
