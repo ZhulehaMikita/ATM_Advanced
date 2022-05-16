@@ -18,5 +18,5 @@ Scenario: Verification of Dashboards pannel without added items (default state)
     | SHARED         |
     | EDIT           |
     | DELETE         |
-    And 'First part of message' should contain 'You have no1 dashboards' text
+    And 'First part of message' should contain 'You have no dashboards' text
     And 'Second part of message' should contain 'Add your first dashboard to analyse statistics' text
