@@ -14,7 +14,9 @@ node {
     }
   } post {
       always {
-        junit '**/reports/junit/*.xml'
+         dir("TAF_IO"){
+          junit './reports/junit/*.xml'
+         }
       }
    } 
   stage('SonarQube analysis') {
