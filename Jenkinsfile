@@ -12,15 +12,15 @@ node {
     dir("TAF_IO") {
       bat 'npm test'
     }
-  }
+  } post {
+      always {
+        junit '**/reports/junit/*.xml'
+      }
+   } 
   stage('SonarQube analysis') {
     def scannerHome = tool 'SonarScanner';
     withSonarQubeEnv('Sonar local') { 
       bat "${scannerHome}/bin/sonar-scanner" 
     }
-  }
-} post {
-      always {
-        junit '**/reports/junit/*.xml'
-      }
-   } 
+  } 
+} 
