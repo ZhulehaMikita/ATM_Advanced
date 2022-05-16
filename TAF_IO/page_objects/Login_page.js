@@ -1,6 +1,6 @@
 const BasePage = require('./Base_page');
 
-class Login_page extends BasePage {
+class LoginPage extends BasePage {
     constructor(){
         super();
         this.url = this.url + '/#login';
@@ -11,4 +11,4 @@ class Login_page extends BasePage {
     }
 }
 
-module.exports =  Login_page;
+module.exports =  LoginPage;
