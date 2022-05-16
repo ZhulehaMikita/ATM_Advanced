@@ -4,10 +4,10 @@ node {
     checkout scm
   }
   stage('Install') {
-    sh 'npm install'
+    bat 'npm install'
   }
     stage('Test') {
-    sh 'npm test'
+    bat 'npm test'
   }
   stage('SonarQube analysis') {
     def scannerHome = tool 'SonarScanner';
