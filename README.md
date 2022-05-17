@@ -20,7 +20,7 @@ npm test -- --env "env-name"
 ```
 # Run tests with defferent ammount of instances
 ```
-npm test -- --inctances number
+npm test -- --instances number
 ```
 # Run tests with different tags
 ```

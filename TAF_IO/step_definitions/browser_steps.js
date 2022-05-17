@@ -1,4 +1,4 @@
-const { When, Then } = require('@cucumber/cucumber');
+const { When, Then } = require('@wdio/cucumber-framework');
 const pageSwitcher = require('./page_switcher');
 const credentials = require('../step_definitions/data/credentials.json');
 const { expect } = require('chai');
@@ -40,10 +40,10 @@ Then('{string} should be disabled', async function(value){
 });
 
 Then('Elements of {string} are equal to:', async function(value, title){
-    let text = await $$(pageSwitcher.getElement(value)).map(el => el.getText()).join(',');
-    let arr = [].concat.apply([], title.rawTable).join(',');
-    expect(text).to.equal(arr);
-    logger.info(`Elements of "${value}" are equal to "${arr}"`);
+    let arr1 = await $$(pageSwitcher.getElement(value)).map(el => el.getText());
+    let arr2 = [].concat.apply([], title.rawTable);
+    expect(arr1).to.deep.equal(arr2);
+    logger.info(`Elements of "${arr1}" are equal to "${arr2}"`);
 });
 
 Then('the {string} element should be visible', async function(value){

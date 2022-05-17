@@ -2,7 +2,7 @@ const pages = require('../page_objects/Pages');
 
 class PageSwitcher {
     constructor(){
-        this.currentPageState = {};
+        this.state = {};
     }
 
     setState(pageName){
