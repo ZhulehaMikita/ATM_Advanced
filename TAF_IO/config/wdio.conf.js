@@ -55,7 +55,6 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        maxInstances: 5,
         browserName: 'chrome',
         acceptInsecureCerts: true,
         maxInstances: args.instances 
@@ -84,7 +83,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost',
+    baseUrl: '',
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
@@ -192,11 +191,6 @@ exports.config = {
     before: function () {
         return browser.setWindowSize(1900, 1000);
     },
-    afterStep: async function () {
-        const screenshot = await browser.takeScreenshot()
-        const decodedImage = new Buffer.from(screenshot, 'base64');
-        return this.attach(decodedImage, 'image/png');
-    },
     onComplete: () => {
         reporter.generate({
             jsonDir: './reports/cucumber/',
@@ -208,10 +202,15 @@ exports.config = {
     beforeScenario: function () {
         logger.debug(`New scenario has been started...`);
     },
-    afterScenario: async function () {
+    afterScenario: async function (world, result) {
         const screenShot = await browser.takeScreenshot();
         cucumberJson.attach(screenShot, 'image/png');
-        logger.debug(`This scenario has been completed successfully`);
+        if (result.passed){
+            logger.debug(`This scenario has been completed successfully`);
+        } else {
+            logger.debug(`This scenario has been failed`);
+        }
+        
     },
     
     /**
