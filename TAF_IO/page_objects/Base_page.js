@@ -5,10 +5,15 @@ class BasePage {
     
     constructor(){
         this.url = params[args.env];
+        this['Launches link'] = '=Launches';
     }
 
     openPage(){
         return browser.url(this.url);
+    }
+
+    verifyCollection(){
+        
     }
 }
 
