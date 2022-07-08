@@ -210,7 +210,6 @@ exports.config = {
         } else {
             logger.debug(`This scenario has been failed`);
         }
-        
     },
     
     /**
