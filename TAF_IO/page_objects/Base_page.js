@@ -1,6 +1,6 @@
 const params = require('../step_definitions/data/parameters.json');
-const args = require('../config/arguments');
-
+//const args = require('../config/arguments');
+const args = {env: 'local'};
 class BasePage {
     
     constructor(){
@@ -12,9 +12,6 @@ class BasePage {
         return browser.url(this.url);
     }
 
-    verifyCollection(){
-        
-    }
 }
 
 module.exports = BasePage;
