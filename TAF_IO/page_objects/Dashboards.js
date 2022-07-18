@@ -12,7 +12,7 @@ class Dashboards extends BasePage {
         this['Default active button'] = '.dashboardPageToolbar__active-table--17uQ-';
         this['First part of message'] = '.emptyDashboards__empty-dashboard-headline--vhQK6';
         this['Second part of message'] = '.emptyDashboards__empty-dashboard-text--1MiEz';
-        this['First dashboard'] = '.dashboardTable__name--1sWJs';
+        this['First dashboard'] = 'a.dashboardTable__name--1sWJs';
         this['First widget'] = '.react-draggable:nth-child(1)';
         this['Second widget'] = '.react-draggable:nth-child(4)';
         this['Resizing option'] = '.react-draggable:nth-child(1) .react-resizable-handle';

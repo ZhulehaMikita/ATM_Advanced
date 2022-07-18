@@ -6,7 +6,7 @@ const reportsPath = path.join(__dirname, '../reports');
 
 exports.config = {
     specs: [
-        './mochaSpecs/*test.js'
+        './mocha/*_tests.js'
     ],
     maxInstances: 10,
     capabilities: [{
