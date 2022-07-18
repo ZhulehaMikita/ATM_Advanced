@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "devDependencies": {
+        "@4tw/cypress-drag-drop": "^2.2.0",
         "@wdio/allure-reporter": "^7.20.0",
         "@wdio/cli": "^7.20.2",
         "@wdio/cucumber-framework": "^7.19.5",
@@ -12,6 +13,7 @@
         "@wdio/spec-reporter": "^7.19.5",
         "chai": "^4.3.6",
         "chromedriver": "^102.0.0",
+        "cypress": "^10.1.0",
         "mocha": "^10.0.0",
         "multiple-cucumber-html-reporter": "^1.20.0",
         "wdio-chromedriver-service": "^7.3.2",
@@ -23,6 +25,7 @@
     "scripts": {
         "pretest": "node ./utils/delete_reports.js",
         "test": "wdio run ./config/wdio.conf.js",
-        "mocha": "wdio run ./config/wdio.conf-mocha.js"
+        "mocha": "wdio run ./config/wdio.conf-mocha.js",
+        "cypress": "cypress open --config-file ./config/cypress.config.js"
     }
 }
