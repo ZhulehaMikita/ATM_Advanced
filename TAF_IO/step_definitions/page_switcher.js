@@ -10,6 +10,7 @@ class PageSwitcher {
     }
 
     getState(){
+        this.state.project = this.project;
         return this.state;
     }
 
@@ -19,6 +20,10 @@ class PageSwitcher {
 
     getElement(elementName){
         return this.state[elementName];
+    }
+
+    setProject(project){
+        this.project = project;
     }
 }
 

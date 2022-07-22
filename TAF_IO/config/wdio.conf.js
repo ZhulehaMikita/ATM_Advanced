@@ -210,6 +210,8 @@ exports.config = {
         } else {
             logger.debug(`This scenario has been failed`);
         }
+        await browser.reloadSession();
+        return browser.setWindowSize(1900, 1000);
     },
     
     /**

@@ -6,6 +6,7 @@ const logger  = require("../config/logger.config.js");
 
 When('The page is loaded as {string} user', async function (user){
     pageSwitcher.setState('Login');
+    pageSwitcher.setProject(credentials[user].project);
     pageSwitcher.getState().openPage();
     await $(pageSwitcher.getElement('Login page section')).waitForExist({ timeout: 5000 });
     await $(pageSwitcher.getElement('Login field')).setValue(credentials[user].login);
@@ -20,6 +21,18 @@ When('the {string} page is switched to', function(value){
     logger.info(`"${value}" page is switched to`);
 });
 
+When('{string} element is clicked', async function(value){
+    await $(pageSwitcher.getElement(value)).waitForExist({ timeout: 5000 });
+    await $(pageSwitcher.getElement(value)).click();
+    logger.info(`"${value}" element has been clicked`);
+});
+
+When('the {string} element is filled with {string} text', async function(value, text){
+    await $(pageSwitcher.getElement(value)).waitForExist({ timeout: 5000 });
+    await $(pageSwitcher.getElement(value)).setValue(text);
+    logger.info(`"${value}" element has been filled with '${text}'`);
+});
+
 Then('{string} page should be opened', async function (value){
     await browser.pause(1000);
     pageSwitcher.setState(value);
@@ -28,6 +41,7 @@ Then('{string} page should be opened', async function (value){
 });
 
 Then('{string} should contain {string} text', async function(title, value){
+    await browser.pause(1000);
     await $(pageSwitcher.getElement(title)).waitForExist({ timeout: 5000 });
     expect(await $(pageSwitcher.getElement(title)).getText()).to.be.equal(value);
     logger.info(`"${title}" element contains "${value}" text`);
@@ -50,4 +64,10 @@ Then('the {string} element should be visible', async function(value){
     await $(pageSwitcher.getElement(value)).waitForExist({ timeout: 5000 });
     expect(await $(pageSwitcher.getElement(value)).isDisplayed()).to.be.equal(true);
     logger.info(`"${value}" element is visible`);
+});
+
+Then('{string} should contain {string} placeholder', async function(value, text){
+    await $(pageSwitcher.getElement(value)).waitForExist({ timeout: 5000 });
+    expect(await $(pageSwitcher.getElement(value)).getAttribute("placeholder")).to.be.equal(text);
+    logger.info(`'${value}' contains '${text}' placeholder`);
 });
