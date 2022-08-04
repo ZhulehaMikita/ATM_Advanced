@@ -2,6 +2,11 @@ const reporter = require('multiple-cucumber-html-reporter');
 const args = require('./arguments');
 const logger  = require("./logger.config.js");
 const cucumberJson = require('wdio-cucumberjs-json-reporter').default;
+const slack = require('./slack-integration/index');
+const fetch = require('node-fetch');
+const reportportal = require('wdio-reportportal-reporter');
+const RpService = require("wdio-reportportal-service");
+const conf = require("./reportportal-integration/reportportal.conf.js");
 
 exports.config = {
     //
@@ -57,7 +62,7 @@ exports.config = {
     capabilities: [{
         browserName: 'chrome',
         acceptInsecureCerts: true,
-        maxInstances: args.instances 
+        maxInstances: args.instances
     }],
     logLevel: 'info',
     //
@@ -92,8 +97,12 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
-    
+    services: ['chromedriver',
+    [slack, {
+        webHookUrl: "https://hooks.slack.com/services/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"
+    }],
+    [RpService, {}]
+    ],
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -122,13 +131,14 @@ exports.config = {
     reporters: ['spec',
     ['cucumberjs-json', {
         jsonFolder: './reports/cucumber/',
-    }, ],
+    }],
     ['junit', {
         outputDir: './reports/junit',
         outputFileFormat: function() { 
             return `junit-report.xml`
         }
-    }]
+    }],
+    [reportportal, conf]
     ],
     //
     // Options to be passed to Mocha.
@@ -199,10 +209,37 @@ exports.config = {
             disableLog: true
         })
     },
-    beforeScenario: function () {
+    beforeScenario: function (world, context) { 
         logger.debug(`New scenario has been started...`);
     },
-    afterScenario: async function (world, result) {
+    afterStep: async function (step, scenario, result, context) {
+        if (!result.passed) {
+            let failureObject = {};
+            failureObject.type = 'afterStep';
+            failureObject.error = result.error;
+            failureObject.title = `${step.keyword}${step.text}`;
+            const screenShot = await browser.takeScreenshot();
+            let attachment = Buffer.from(screenShot, 'base64');
+            reportportal.sendFileToTest(failureObject, 'error', "screnshot.png", attachment);
+        }
+    },
+    afterScenario: async function (world, result, context) {
+        let arr = world.pickle.tags;
+        let arr2 = arr.map(el => el.name);
+        let issueKey = arr2.find(el => el.match(/@jira/)).slice(6, -1);
+        let transactionID = result.passed ? "81" : "71";
+        await fetch(`http://localhost:9090/rest/api/2/issue/${issueKey}/transitions`, {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ODcwMzMzMjU4NzkwOlBww9D+gCeVTTYvZ/i8lE0qs3An',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "transition": {
+                "id": transactionID
+              }
+            })
+        });
         const screenShot = await browser.takeScreenshot();
         cucumberJson.attach(screenShot, 'image/png');
         if (result.passed){
@@ -213,7 +250,8 @@ exports.config = {
         await browser.reloadSession();
         return browser.setWindowSize(1900, 1000);
     },
-    
+    //afterFeature: function (uri, feature) {
+    //}
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
@@ -256,7 +294,6 @@ exports.config = {
      */
     // afterTest: function(test, context, { error, result, duration, passed, retries }) {
     // },
-
 
     /**
      * Hook that gets executed after the suite has ended
