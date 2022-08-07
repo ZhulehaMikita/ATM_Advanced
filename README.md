@@ -2,6 +2,8 @@
 
 ***This repository has been created to collect all tasks related to ATM_Advanced program***
 
+**Please use the following command to run tests in Sauce labs: npm run sauce -- --env='demo' --tags '@sauce'**
+
 # Downloading
 ```
 git clone https://github.com/ZhulehaMikita/ATM_Advanced.git

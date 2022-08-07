@@ -1,6 +1,7 @@
 @smoke
 Feature: Dashboard manipulations
 
+@jira(AT-25) 
 Scenario: Creation of the dashboard
     Given The page is loaded as "admin" user
 
@@ -29,7 +30,8 @@ Scenario: Creation of the dashboard
     | Print              |
     | Add new widget     |
 
-Scenario Outline: Widgets creation 
+@jira(AT-27) 
+Scenario Outline: Widgets creation (<Name>)
     Given The page is loaded as "admin" user
 
     When the "Dashboards" page is switched to
@@ -55,6 +57,7 @@ Examples:
 |Launch statics chart widget radiobutton     |Demo widget 1  |some information 1 | Launch statics chart widget title       |
 |Launches duration chart widget radiobutton  |Demo widget 2  |some information 2 | Launches duration chart widget title    |
 
+@jira(AT-28) 
 Scenario: Dashboard delition
     Given The page is loaded as "admin" user
 

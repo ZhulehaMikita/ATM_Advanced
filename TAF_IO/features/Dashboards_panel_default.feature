@@ -1,6 +1,6 @@
 @smoke
 Feature: Dashboards panel verification
-
+@jira(AT-26) @sauce
 Scenario: Verification of Dashboards pannel without added items (default state)
     Given The page is loaded as "default" user
 
